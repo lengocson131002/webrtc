@@ -4,7 +4,11 @@ let peerConnection;
 
 let uid = String(Math.floor(Math.random() * 10000));
 
-const WEBSOCKET_URL = "ws://10.20.1.169:8888/socket/signal";
+const cameraOption = document.getElementById("camera-option");
+let cameraOpened = cameraOption.value === "open";
+console.log("Camera open: ", cameraOpened);
+
+const WEBSOCKET_URL = "wss://api-stmc-ca-dev.hcm.unicloud.ai/socket/signal";
 let webSocket;
 let channelId = "signal_channel_979ef240-ab56-4c09-904c-056c1eb26254";
 
@@ -201,3 +205,11 @@ init();
 
 document.getElementById("join").addEventListener("click", join);
 document.getElementById("leave").addEventListener("click", leave);
+
+// camera option change
+cameraOption.addEventListener("change", (event) => {
+  let cameraOpened = cameraOption.value === "open";
+  console.log("Camera open: ", cameraOpened);
+  let tracks = localStream.getVideoTracks();
+  tracks.forEach((track) => (track.enabled = cameraOpened));
+});
